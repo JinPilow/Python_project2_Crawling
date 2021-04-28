@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
-response = urlopen('https://store.steampowered.com/search/?filter=topsellers')
+response = urlopen('https://store.steampowered.com/search/?sort_by=_ASC&os=win&filter=globaltopsellers')
 soup = BeautifulSoup(response, 'html.parser')
 
 # 게임 이름 가져오기
@@ -14,9 +14,12 @@ result = soup.select("#search_resultsRows > a")
 href = []
 for i in result:
     temp = i.attrs['href']
-    print(temp)
     href.append(temp)
     response = urlopen(temp)
-    # result2 = soup.select("#game_highlights > div.rightcol > div > div.glance_ctn_responsive_right > div > div.glance_tags.popular_tags > a:nth-child(1)")
-print(href)
+    soup = BeautifulSoup(response, 'html.parser')
+    result2 = soup.select("a.app_tag")
+    for j in result2:
+        print(j.get_text())
+    print("--------------------------------------------------------------------------")
+# print(href)
 
