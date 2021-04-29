@@ -1,25 +1,29 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import time
-from multiprocessing import Pool, Manager
+from multiprocessing import Pool
 
-count = 0
+start = time.time()
+
+response = urlopen('https://store.steampowered.com/search/?sort_by=_ASC&os=win&filter=globaltopsellers')
+soup = BeautifulSoup(response, 'html.parser')
+
+title = []
 tags = {}
+href = []
 
-
-def get_href():
-    hrefs = soup.select("#search_resultsRows > a")
-    data = []
-    for href in hrefs:
-        data.append(href.attrs['href'])
-    return data
-
+# 게임 이름 가져오기
+result = soup.select("span.title")
+for i in result:
+    title.append(i.get_text())
 
 # 게임 주소 가져오고 들어가서 카테고리 가져오기
-def get_content(href):
-    global count
-    global tags
-    response = urlopen(href)
+result = soup.select("#search_resultsRows > a")
+count = 0
+for i in result:
+    temp = i.attrs['href']
+    href.append(temp)
+    response = urlopen(temp)
     soup = BeautifulSoup(response, 'html.parser')
     result2 = soup.select("a.app_tag")
     i = 0
@@ -32,25 +36,6 @@ def get_content(href):
         if i == 3:
             break
     count = count + 1
-    print("processing...")
-
-
-if __name__ == '__main__':
-    start = time.time()
-
-    response = urlopen('https://store.steampowered.com/search/?sort_by=_ASC&os=win&filter=globaltopsellers')
-    soup = BeautifulSoup(response, 'html.parser')
-
-    title = []
-
-    # 게임 이름 가져오기
-    result = soup.select("span.title")
-    for i in result:
-        title.append(i.get_text())
-
-    pool = Pool(processes=16)
-    pool.map(get_content, get_href())
-
-    print(count)
-    print(tags)
-    print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
+print(count)
+print(tags)
+print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
