@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+import matplotlib.pyplot as plt
 import time
 from multiprocessing import Pool, Manager
 
@@ -65,6 +66,14 @@ if __name__ == '__main__':
 
     # 제목 갯수는 삭제
     del total_tag['title']
+
     print(total_tag)
+
+    # myList = total_tag.items()
+    # myList = sorted(total_tag)
+    # x, y = zip(*myList)
+
+    plt.bar(list(total_tag.keys()), total_tag.values())
+    plt.show()
 
     print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
