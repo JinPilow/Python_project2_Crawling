@@ -1,12 +1,23 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+import time
+
+# chrome_options = Options()
+# chrome_options.add_argument("--headless")
+
+# driver = webdriver.Chrome(options=chrome_options)
+# driver.implicitly_wait(6)
 
 driver = webdriver.Chrome()
 url = "https://store.steampowered.com/search/?filter=topsellers"
 driver.get(url)
 
+'''
 dic = dict()
 i = 1
 while i <= 2:
@@ -44,6 +55,21 @@ while i <= 2:
         i += 1
         driver.back()
 print(dic)
+'''
+# time.sleep(3)
+# driver.quit()
 
-#time.sleep(3)
+dic = dict()
+i = 2
+while i <= 2:
+    link = driver.find_element_by_css_selector('#search_resultsRows > a:nth-child(' + str(i) + ')')
+    link.click()
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+
+    contents = soup.select('div.page_content_ctn')
+    for content in contents:
+        if content.find('div', 'apphub_AppName') and content.find('a', 'app_tag'):
+            title = content.select('div.apphub_AppName')
+
 driver.quit()
