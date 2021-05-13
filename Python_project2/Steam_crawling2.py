@@ -55,20 +55,21 @@ if __name__ == '__main__':
         tlist[j]["title"] = i.get_text()
         j = j + 1
 
-    for i in range(len(tlist)):
-        try:
-            result2 = soup.select("#search_resultsRows > a:nth-child("+str(i)+") > div.responsive_search_name_combined > "
-                                  "div.col.search_price_discount_combined.responsive_secondrow > "
-                                  "div.col.search_price.responsive_secondrow")
-            # tlist[j]["price"] = i.get_text()
-            print(result2)
-            # print(j)
-        except:
-            result2 = soup.select("#search_resultsRows > a:nth-child("+str(i)+") > div.responsive_search_name_combined > "
-                                  "div.col.search_price_discount_combined.responsive_secondrow > "
-                                  "div.col.search_price.discounted.responsive_secondrow")
+    # 게임 가격 가져오기
+    result2 = soup.select("div.col.search_price.responsive_secondrow")
+    j = 0
+    for i in result2:
+        temp = i.get_text(" ", strip=True).replace("₩", "")
+        temp = temp.split('  ')
+        if len(temp) > 1:
+            tlist[j]["price"] = temp[0]
+            tlist[j]["discounted"] = temp[1]
+        else:
+            tlist[j]["price"] = temp[0]
+        j = j + 1
 
     print("크롤링 갯수 :{}".format(len(result)))
+    print("크롤링 시간 :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
 
     # 태그 개수 통계
     total_tag = {}
@@ -81,19 +82,9 @@ if __name__ == '__main__':
 
     # 제목 갯수는 삭제
     del total_tag['title']
-
-    # 임시 데이터
-    # total_tag = {'Gore': 3, 'Violent': 3, 'Sexual Content': 4, 'Action': 11, 'Adventure': 6, 'RPG': 10,
-    # 'Story Rich': 3, 'FPS': 5, 'Great Soundtrack': 3, 'Open World': 10, 'Co-op': 3, 'Split Screen': 1,
-    # 'Multiplayer': 10, 'Funny': 2, 'Battle Royale': 2, 'Mature': 2, 'Open World Survival Craft': 3, 'Online Co-Op':
-    # 3, 'Survival': 4, 'Strategy': 2, 'Simulation': 2, 'Horror': 3, 'Zombies': 3, 'Crafting': 1, 'Fantasy': 1,
-    # 'Physics': 1, 'Military': 1, 'VR': 1, 'Character Customization': 1, 'Third-Person Shooter': 1, 'Racing': 1,
-    # 'Driving': 2, 'Early Access': 2, 'Dungeons & Dragons': 1, 'Cyberpunk': 1, 'Utilities': 1, 'Software': 1,
-    # 'Farming Sim': 1, 'Life Sim': 1, 'Survival Horror': 1, 'Base Building': 2, 'Building': 1, 'Automobile Sim': 1,
-    # 'Automation': 1}
+    del total_tag['price']
 
     # print(total_tag)
-    print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
 
     fig, ax = plt.subplots()
     ax.xaxis.set_major_locator(ticker.MultipleLocator(2))
