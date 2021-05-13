@@ -59,7 +59,7 @@ if __name__ == '__main__':
     result2 = soup.select("div.col.search_price.responsive_secondrow")
     j = 0
     for i in result2:
-        temp = i.get_text(" ", strip=True).replace("₩", "")
+        temp = i.get_text(" ", strip=True).replace("₩ ", "")
         temp = temp.split('  ')
         if len(temp) > 1:
             tlist[j]["price"] = temp[0]
