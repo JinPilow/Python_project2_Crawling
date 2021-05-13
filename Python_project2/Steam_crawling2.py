@@ -55,6 +55,19 @@ if __name__ == '__main__':
         tlist[j]["title"] = i.get_text()
         j = j + 1
 
+    for i in range(len(tlist)):
+        try:
+            result2 = soup.select("#search_resultsRows > a:nth-child("+str(i)+") > div.responsive_search_name_combined > "
+                                  "div.col.search_price_discount_combined.responsive_secondrow > "
+                                  "div.col.search_price.responsive_secondrow")
+            # tlist[j]["price"] = i.get_text()
+            print(result2)
+            # print(j)
+        except:
+            result2 = soup.select("#search_resultsRows > a:nth-child("+str(i)+") > div.responsive_search_name_combined > "
+                                  "div.col.search_price_discount_combined.responsive_secondrow > "
+                                  "div.col.search_price.discounted.responsive_secondrow")
+
     print("크롤링 갯수 :{}".format(len(result)))
 
     # 태그 개수 통계
@@ -79,7 +92,7 @@ if __name__ == '__main__':
     # 'Farming Sim': 1, 'Life Sim': 1, 'Survival Horror': 1, 'Base Building': 2, 'Building': 1, 'Automobile Sim': 1,
     # 'Automation': 1}
 
-    print(total_tag)
+    # print(total_tag)
     print("time :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
 
     fig, ax = plt.subplots()
