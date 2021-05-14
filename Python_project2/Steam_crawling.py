@@ -1,3 +1,4 @@
+'''
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -17,6 +18,7 @@ driver = webdriver.Chrome()
 url = "https://store.steampowered.com/search/?filter=topsellers"
 driver.get(url)
 
+'''
 '''
 dic = dict()
 i = 1
@@ -58,7 +60,7 @@ print(dic)
 '''
 # time.sleep(3)
 # driver.quit()
-
+'''
 dic = dict()
 i = 2
 while i <= 2:
@@ -73,3 +75,51 @@ while i <= 2:
             title = content.select('div.apphub_AppName')
 
 driver.quit()
+'''
+
+from bs4 import BeautifulSoup
+import requests
+import re
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+from pandas import DataFrame
+
+
+html = requests.get("https://store.steampowered.com/search/?filter=topsellers")
+soup = BeautifulSoup(html.content, 'html.parser')
+
+title = soup.select("span.title")
+tag = soup.select('div.col.search_price')
+
+def comma_to_int(string):
+    number = re.sub(",", "", string)
+    return int(number)
+
+list_title = []
+list_price = []
+for i in title:
+    list_title.append(i.get_text())
+
+for i in tag:
+    if i.get_text().strip().count("₩") == 1:
+        a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
+        list_price.append(a)
+    else:
+        s = i.get_text().strip().split("₩")
+        a = comma_to_int(s[1].strip())
+        list_price.append(a)
+
+title_price = dict(zip(list_title, list_price))
+
+sns.barplot(x=list_title,y=list_price)
+plt.xticks(rotation = 90, fontsize = 6)
+plt.show()
+
+df = DataFrame({'col_1': title_price.keys(), 'col_2': title_price.values()})
+print(df)
+
+factor_price = pd.cut(df.col_2, 4)
+group_price = df.col_2.groupby(factor_price)
+print(group_price.agg(['count', 'mean', 'std', 'min', 'max']))
