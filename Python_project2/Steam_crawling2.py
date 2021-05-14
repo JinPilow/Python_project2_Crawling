@@ -62,7 +62,8 @@ if __name__ == '__main__':
     j = 0
     for i in result2:
         temp = i.get_text(" ", strip=True).replace("₩ ", "")
-        temp = temp.split('  ')
+        temp = temp.replace(",", "")
+        temp = temp.split(' ')
         if len(temp) > 1:
             tlist[j]["price"] = temp[0]
             tlist[j]["discounted"] = temp[1]
@@ -70,8 +71,7 @@ if __name__ == '__main__':
             tlist[j]["price"] = temp[0]
         j = j + 1
 
-    tlist = {'RPG': 1, 'Action': 1, 'Story Rich': 1, 'title': 'Mass Effect™ Legendary Edition', 'price': '66,000'}, {'Gore': 1, 'Violent': 1, 'Sexual Content': 1, 'title': 'Resident Evil Village', 'price': '66,800'}, {'Gore': 1, 'Violent': 1, 'Sexual Content': 1, 'title': 'Resident Evil Village & Resident Evil 7 Complete Bundle', 'price': '89,000'}, {'Co-op': 1, 'Adventure': 1, 'Split Screen': 1, 'title': 'It Takes Two', 'price': '44,000'}, {'Open World': 1, 'Action': 1, 'RPG': 1, 'title': 'BIOMUTANT', 'price': '64,900'}, {'Action': 1, 'Adventure': 1, 'RPG': 1, 'title': 'Hood: Outlaws & Legends', 'price': '29,800'}, {'title': 'Hood: Outlaws & Legends - Year 1 Edition', 'price': '49,800'}, {'title': 'Destiny 2: Legendary Edition', 'price': '97,500 58,500'}, {'Action': 1, 'FPS': 1, 'Great Soundtrack': 1, 'title': 'DOOM Eternal Deluxe Edition', 'price': '100,850 33,280'}, {'Sexual Content': 1, 'Mature': 1, 'title': 'Grand Theft Auto V: Premium Edition', 'price': '33,000'}, {'Gore': 1, 'Violent': 1, 'Sexual Content': 1, 'title': 'Resident Evil Village Deluxe Edition', 'price': '79,670'}, {'Open World Survival Craft': 1, 'Online Co-Op': 1, 'Survival': 1, 'title': 'Valheim', 'price': '20,500'}, {'Open World': 1, 'RPG': 1, 'Adventure': 1, 'title': 'The Elder Scrolls V: Skyrim Special Edition', 'price': '46,160 23,080'}, {'title': 'Mass Effect™ Legendary Edition – ME3 Owner Offer', 'price': '82,170'}, {'Action': 1, 'Adventure': 1, 'Free to Play': 1, 'title': 'Destiny 2: Season of the Splicer Silver Bundle', 'price': '18,000'}, {'Horror': 1, 'Online Co-Op': 1, 'Multiplayer': 1, 'title': 'Phasmophobia', 'price': '14,500'}, {'Simulation': 1, 'Strategy': 1, 'Action': 1, 'title': 'Arma 3 Creator DLC: S.O.G. Prairie Fire', 'price': '24,500 20,820'}, {'Survival': 1, 'Crafting': 1, 'Multiplayer': 1, 'title': 'Rust', 'price': '41,000'}, {'Open World Survival Craft': 1, 'Survival': 1, 'Underwater': 1, 'title': 'Subnautica: Below Zero', 'price': '31,000'}, {'Adventure': 1, 'Action': 1, 'Free to Play': 1, 'title': 'Destiny 2: Beyond Light + 1 Season', 'price': '56,000 37,520'}, {'Destruction': 1, 'Physics': 1, 'Sandbox': 1, 'title': 'Teardown', 'price': '22,500 18,000'}, {'Action': 1, 'FPS': 1, 'Great Soundtrack': 1, 'title': 'DOOM Eternal Standard Edition', 'price': '67,000 22,110'}, {'title': 'Arma 3 Ultimate Edition', 'price': '158,800 43,120'}, {'Adventure': 1, 'Multiplayer': 1, 'Open World': 1, 'title': 'Sea of Thieves', 'price': '39,400'}, {'title': 'Journey to the Savage Planet Deluxe Edition', 'price': '39,000 18,270'}, {'Multiplayer': 1, 'FPS': 1, 'Zombies': 1, 'title': 'Call of Duty®: Black Ops III', 'price': '75,700 45,420'}, {'title': 'Outward & Pathfinder Ultimate Bundle', 'price': '135,000 38,910'}, {'Action': 1, 'Multiplayer': 1, 'Military': 1, 'title': 'Arma 3', 'price': '36,000 9,000'}, {'Multiplayer': 1, 'FPS': 1, 'Zombies': 1, 'title': 'Call of Duty®: Black Ops III', 'price': '75,700 45,420'}, {'Adventure': 1, 'Action': 1, 'Action-Adventure': 1, 'title': 'Journey To The Savage Planet', 'price': '31,000 15,500'}, {'Action': 1, 'Adventure': 1, 'Free to Play': 1, 'title': 'Destiny 2: Beyond Light Deluxe Edition', 'price': '78,500 58,870'}, {'title': 'Fallout 4: Game of the Year Edition', 'price': '69,000 34,500'}, {'title': 'Pathfinder: Kingmaker - Imperial Edition Bundle', 'price': '49,500 21,830'}, {'Racing': 1, 'Open World': 1, 'Driving': 1, 'title': 'Forza Horizon 4', 'price': '59,900'}, {'Survival': 1, 'Shooter': 1, 'Multiplayer': 1, 'title': "PLAYERUNKNOWN'S BATTLEGROUNDS", 'price': '32,000'}, {'Mature': 1, 'Utilities': 1, 'Software': 1, 'title': 'Wallpaper Engine', 'price': '4,400'}, {'title': 'The Binding of Isaac: Rebirth Complete Bundle', 'price': '53,000'}, {'Early Access': 1, 'RPG': 1, 'Dungeons & Dragons': 1, 'title': "Baldur's Gate 3", 'price': '66,000'}, {'Farming Sim': 1, 'Life Sim': 1, 'RPG': 1, 'title': 'Stardew Valley', 'price': '16,000'}, {'Open World': 1, 'Adventure': 1, 'Story Rich': 1, 'title': 'Red Dead Redemption 2', 'price': '66,000'}, {'RPG': 1, 'Open World': 1, 'Survival': 1, 'title': 'Outward', 'price': '41,000 12,300'}, {'Open World Survival Craft': 1, 'Survival': 1, 'Open World': 1, 'title': 'The Forest', 'price': '20,500'}, {'Action': 1, 'Adventure': 1, 'Battle Royale': 1, 'title': 'Apex Legends™ - Champion Edition', 'price': '44,000'}, {'title': 'EA Play', 'price': '5,000'}, {'Survival': 1, 'Open World Survival Craft': 1, 'Multiplayer': 1, 'title': 'Raft', 'price': '21,000'}, {'Great Soundtrack': 1, 'Story Rich': 1, 'Action': 1, 'title': 'NieR Replicant™ ver.1.22474487139...', 'price': '69,800'}, {'Cyberpunk': 1, 'Open World': 1, 'RPG': 1, 'title': 'Cyberpunk 2077', 'price': '66,000'}, {'Funny': 1, 'Physics': 1, 'Multiplayer': 1, 'title': 'Gang Beasts', 'price': '21,000 9,450'}, {'RPG': 1, 'Action': 1, 'Co-op': 1, 'title': 'OUTRIDERS', 'price': '70,920'}, {'Early Access': 1, 'Online Co-Op': 1, 'Horror': 1, 'title': 'GTFO', 'price': '45,000 36,000'}
-
+    # tlist = {'RPG': 1, 'Action': 1, 'Story Rich': 1, 'title': 'Mass Effect™ Legendary Edition', 'price': '66000'}, {'Gore': 1, 'Violent': 1, 'Sexual Content': 1, 'title': 'Resident Evil Village', 'price': '66800'}, {'Strategy': 1, 'Historical': 1, 'War': 1, 'title': 'Total War: THREE KINGDOMS', 'price': '59800', 'discounted': '29900'}, {'Gore': 1, 'Violent': 1, 'Sexual Content': 1, 'title': 'Resident Evil Village & Resident Evil 7 Complete Bundle', 'price': '89000'}, {'title': 'Mass Effect™ Legendary Edition – ME3 Owner Offer', 'price': '82170'}, {'Open World Survival Craft': 1, 'Sandbox': 1, 'Survival': 1, 'title': 'Terraria', 'price': '10500', 'discounted': '5250'}, {'Co-op': 1, 'Multiplayer': 1, 'Class-Based': 1, 'title': 'Deep Rock Galactic', 'price': '31000', 'discounted': '18600'}, {'Open World Survival Craft': 1, 'Survival': 1, 'Underwater': 1, 'title': 'Subnautica: Below Zero', 'price': '31000'}, {'Open World': 1, 'Action': 1, 'RPG': 1, 'title': 'BIOMUTANT', 'price': '64900'}, {'Co-op': 1, 'Adventure': 1, 'Split Screen': 1, 'title': 'It Takes Two', 'price': '44000'}, {'Colony Sim': 1, 'Resource Management': 1, 'Post-apocalyptic': 1, 'title': 'Before We Leave', 'price': '20500', 'discounted': '15370'}, {'title': 'Destiny 2: Legendary Edition', 'price': '97500', 'discounted': '58500'}, {'Sexual Content': 1, 'Mature': 1, 'title': 'Grand Theft Auto V: Premium Edition', 'price': '33000'}, {'Open World Survival Craft': 1, 'Online Co-Op': 1, 'Survival': 1, 'title': 'Valheim', 'price': '20500'}, {'Action': 1, 'FPS': 1, 'Great Soundtrack': 1, 'title': 'DOOM Eternal Deluxe Edition', 'price': '100850', 'discounted': '33280'}, {'title': 'Middle-earth: Shadow of War Definitive Edition', 'price': '61000', 'discounted': '12200'}, {'Gore': 1, 'Violent': 1, 'Sexual Content': 1, 'title': 'Resident Evil Village Deluxe Edition', 'price': '79670'}, {'Action': 1, 'Adventure': 1, 'RPG': 1, 'title': 'Hood: Outlaws & Legends', 'price': '29800'}, {'title': 'Hood: Outlaws & Legends - Year 1 Edition', 'price': '49800'}, {'Survival': 1, 'Crafting': 1, 'Multiplayer': 1, 'title': 'Rust', 'price': '41000'}, {'Open World': 1, 'RPG': 1, 'Adventure': 1, 'title': 'The Elder Scrolls V: Skyrim Special Edition', 'price': '46160', 'discounted': '23080'}, {'Horror': 1, 'Online Co-Op': 1, 'Multiplayer': 1, 'title': 'Phasmophobia', 'price': '14500'}, {'Horror': 1, 'Online Co-Op': 1, 'Multiplayer': 1, 'title': 'Phasmophobia', 'price': '14500'}, {'Adventure': 1, 'Multiplayer': 1, 'Open World': 1, 'title': 'Sea of Thieves', 'price': '39400'}, {'Strategy': 1, 'Turn-Based Strategy': 1, 'Historical': 1, 'title': 'Total War™: ROME II - Emperor Edition', 'price': '59800', 'discounted': '14950'}, {'Strategy': 1, 'Action': 1, 'Grand Strategy': 1, 'title': 'Total War: WARHAMMER III', 'price': '60000'}, {'Multiplayer': 1, 'Online Co-Op': 1, 'Local Co-Op': 1, 'title': 'Overcooked! 2', 'price': '26000', 'discounted': '13000'}, {'Action': 1, 'FPS': 1, 'Great Soundtrack': 1, 'title': 'DOOM Eternal Standard Edition', 'price': '67000', 'discounted': '22110'}, {'Multiplayer': 1, 'FPS': 1, 'Zombies': 1, 'title': 'Call of Duty®: Black Ops III', 'price': '75700', 'discounted': '45420'}, {'Action': 1, 'World War II': 1, 'Shooter': 1, 'title': 'Hell Let Loose', 'price': '31000', 'discounted': '23250'}, {'Adventure': 1, 'Action': 1, 'Free to Play': 1, 'title': 'Destiny 2: Beyond Light + 1 Season', 'price': '56000', 'discounted': '37520'}, {'Simulation': 1, 'Strategy': 1, 'Action': 1, 'title': 'Arma 3 Creator DLC: S.O.G. Prairie Fire', 'price': '24500'}, {'Multiplayer': 1, 'FPS': 1, 'Zombies': 1, 'title': 'Call of Duty®: Black Ops III', 'price': '75700', 'discounted': '45420'}, {'Metroidvania': 1, 'Souls-like': 1, 'Gore': 1, 'title': 'Blasphemous', 'price': '26000', 'discounted': '10400'}, {'Racing': 1, 'Open World': 1, 'Driving': 1, 'title': 'Forza Horizon 4', 'price': '59900'}, {'Early Access': 1, 'RPG': 1, 'Dungeons & Dragons': 1, 'title': "Baldur's Gate 3", 'price': '66000'}, {'Flight': 1, 'Action': 1, 'Indie': 1, 'title': 'Project Wingman', 'price': '26000', 'discounted': '19500'}, {'Action': 1, 'Metroidvania': 1, 'Anime': 1, 'title': 'Lost Ruins', 'price': '20500'}, {'Action': 1, 'Adventure': 1, 'Free to Play': 1, 'title': 'Destiny 2: Season of the Splicer Silver Bundle', 'price': '18000'}, {'Destruction': 1, 'Physics': 1, 'Sandbox': 1, 'title': 'Teardown', 'price': '22500', 'discounted': '18000'}, {'title': 'Fallout 4: Game of the Year Edition', 'price': '69000', 'discounted': '34500'}, {'title': 'The Binding of Isaac: Rebirth Complete Bundle', 'price': '53000'}, {'Cyberpunk': 1, 'Open World': 1, 'RPG': 1, 'title': 'Cyberpunk 2077', 'price': '66000'}, {'Open World': 1, 'Adventure': 1, 'Story Rich': 1, 'title': 'Red Dead Redemption 2', 'price': '66000'}, {'Action': 1, 'Adventure': 1, 'Free to Play': 1, 'title': 'Destiny 2: Beyond Light Deluxe Edition', 'price': '78500', 'discounted': '58870'}, {'Action': 1, 'Adventure': 1, 'Free to Play': 1, 'title': 'Apex Legends™ - Legacy Pack', 'price': '5600'}, {'Open World': 1, 'Post-apocalyptic': 1, 'Action': 1, 'title': 'Days Gone', 'price': '58800'}, {'Mature': 1, 'Utilities': 1, 'Software': 1, 'title': 'Wallpaper Engine', 'price': '4400'}, {'RPG': 1, 'Action': 1, 'Co-op': 1, 'title': 'OUTRIDERS', 'price': '70920'}, {'title': 'EA Play', 'price': '5000'}
     print("크롤링 갯수 :{}".format(len(tlist)))
     print("크롤링 시간 :", time.time() - start)  # 현재시각 - 시작시간 = 실행 시간
 
@@ -88,10 +88,36 @@ if __name__ == '__main__':
     del total_tag['title']
     del total_tag['price']
 
-    # total_price = {}
-    # for i in tlist:
-    #     price = math.floor(int(i['price']))
-    #     print(price)
+    total_price = {}
+    for i in tlist:
+        price = int(i['price'])
+        if price < 10000:
+            name = "1만원 이하"
+            if "1만원 이하" in total_price:
+                total_price["1만원 이하"] = total_price["1만원 이하"] + 1
+            else:
+                total_price["1만원 이하"] = 1
+
+        elif price >= 70000:
+            name = "7만원 이상"
+            if "7만원 이상" in total_price:
+                total_price["7만원 이상"] = total_price["7만원 이상"] + 1
+            else:
+                total_price["7만원 이상"] = 1
+
+        else:
+            for j in range(1, 7):
+                name = str(j)+"만원대"
+                if 10000*(j+1) > price >= 10000*j:
+                    if name in total_price:
+                        total_price[name] = total_price[name] + 1
+                        break
+                    else:
+                        total_price[name] = 1
+                        break
+
+    total_price = dict(sorted(total_price.items(), reverse=True))
+    print(total_price)
 
     plt.rc('font', family='Malgun Gothic')
     plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
@@ -99,8 +125,13 @@ if __name__ == '__main__':
     ax.xaxis.set_major_locator(ticker.MultipleLocator(2))
     ax.xaxis.set_minor_locator(ticker.MultipleLocator(1))
     plt.barh(list(total_tag.keys()), total_tag.values())
-    plt.title('태크별 게임')
+    plt.title('태크별')
     plt.ylabel('Tags')
+    fig.set_tight_layout(True)
+
+    fig, ax = plt.subplots()
+    plt.bar(list(total_price.keys()), total_price.values())
+    plt.title('가격별')
 
     fig.set_tight_layout(True)
     plt.show()
