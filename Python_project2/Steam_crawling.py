@@ -87,51 +87,61 @@ import pandas as pd
 from pandas import DataFrame
 
 
-html = requests.get("https://store.steampowered.com/search/?filter=topsellers")
+html = requests.get('https://store.steampowered.com/search/?filter=topsellers')
 soup = BeautifulSoup(html.content, 'html.parser')
 
-title = soup.select("span.title")
+title = soup.select('span.title')
 price = soup.select('div.col.search_price')
-tag_site = soup.find_all("a", href = re.compile("https://store.steampowered.com/"+"app/|bundle/|sub/"))
-cnt = 0
-for i in tag_site:
-    href = i.attrs['href']
-    cnt += 1
-    print(href)
+tag_site = soup.find_all('a', href = re.compile('https://store.steampowered.com/'+\
+                                                'app/|bundle/|sub/'))
 
-def get_tag(tag_site):
-    html = requests.get(tag_site)
+# def get_tag(href):
+#     html = requests.get(href)
+#     soup = BeautifulSoup(html.content, 'html.parser')
+#     tag = soup.find_all('a', href= re.compile('https://store.steampowered.com/' + 'tags/|genre/'))
+#     li = []
+#     for category in tag:
+#         li.append(category.get_text().strip())
+#     return li
+
+def get_tag(href):
+    html = requests.get(href)
     soup = BeautifulSoup(html.content, 'html.parser')
-    tag = soup.find_all('a', class_='app_tag')
+    tag = soup.find_all('a', href = re.compile('https://store.steampowered.com/genre/'))
     li = []
-    for category in tag[:3]:
+    for category in tag:
         li.append(category.get_text().strip())
     return li
 
-print(cnt)
+for i in tag_site:
+    href = i.attrs['href']
+    print(get_tag(href))
 
 
+# for i in tag_site:
+#     href = i.attrs['href']
+#     print(href)
 
-def comma_to_int(string):
-    number = re.sub(",", "", string)
-    return int(number)
-
-list_title = [i.get_text() for i in title]
-list_tag = []
-list_price = []
-
-
-
-for i in price:
-    if i.get_text().strip().count("₩") == 1:
-        a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
-        list_price.append(a)
-    else:
-        s = i.get_text().strip().split("₩")
-        a = comma_to_int(s[1].strip())
-        list_price.append(a)
+# def comma_to_int(string):
+#     number = re.sub(",", "", string)
+#     return int(number)
 #
-title_price = dict(zip(list_title, list_price))
+# list_title = [i.get_text() for i in title]
+# list_tag = []
+# list_price = []
+#
+#
+#
+# for i in price:
+#     if i.get_text().strip().count("₩") == 1:
+#         a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
+#         list_price.append(a)
+#     else:
+#         s = i.get_text().strip().split("₩")
+#         a = comma_to_int(s[1].strip())
+#         list_price.append(a)
+# #
+# title_price = dict(zip(list_title, list_price))
 
 
 # sns.barplot(x=list_title,y=list_price)
