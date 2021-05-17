@@ -91,18 +91,38 @@ html = requests.get("https://store.steampowered.com/search/?filter=topsellers")
 soup = BeautifulSoup(html.content, 'html.parser')
 
 title = soup.select("span.title")
-tag = soup.select('div.col.search_price')
+price = soup.select('div.col.search_price')
+tag_site = soup.find_all("a", href = re.compile("https://store.steampowered.com/"+"app/|bundle/|sub/"))
+cnt = 0
+for i in tag_site:
+    href = i.attrs['href']
+    cnt += 1
+    print(href)
+
+def get_tag(tag_site):
+    html = requests.get(tag_site)
+    soup = BeautifulSoup(html.content, 'html.parser')
+    tag = soup.find_all('a', class_='app_tag')
+    li = []
+    for category in tag[:3]:
+        li.append(category.get_text().strip())
+    return li
+
+print(cnt)
+
+
 
 def comma_to_int(string):
     number = re.sub(",", "", string)
     return int(number)
 
-list_title = []
+list_title = [i.get_text() for i in title]
+list_tag = []
 list_price = []
-for i in title:
-    list_title.append(i.get_text())
 
-for i in tag:
+
+
+for i in price:
     if i.get_text().strip().count("₩") == 1:
         a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
         list_price.append(a)
@@ -110,16 +130,17 @@ for i in tag:
         s = i.get_text().strip().split("₩")
         a = comma_to_int(s[1].strip())
         list_price.append(a)
-
+#
 title_price = dict(zip(list_title, list_price))
 
-sns.barplot(x=list_title,y=list_price)
-plt.xticks(rotation = 90, fontsize = 6)
-plt.show()
 
-df = DataFrame({'col_1': title_price.keys(), 'col_2': title_price.values()})
-print(df)
+# sns.barplot(x=list_title,y=list_price)
+# plt.xticks(rotation = 90, fontsize = 6)
+# plt.show()
+#
+# df = DataFrame({'col_1': list_title, 'col_2': list_price, 'col_3': list_tag})
+# print(df)
 
-factor_price = pd.cut(df.col_2, 4)
-group_price = df.col_2.groupby(factor_price)
-print(group_price.agg(['count', 'mean', 'std', 'min', 'max']))
+# factor_price = pd.cut(df.col_2, 4)
+# group_price = df.col_2.groupby(factor_price)
+# print(group_price.agg(['count', 'mean', 'std', 'min', 'max']))
