@@ -36,6 +36,9 @@ def get_content(href):
         if i == 3:
             break
 
+    genre = soup.select("div.rightcol.game_meta_data > div:nth-of-type(10) > div > div > div > div:nth-of-type(1)")
+    print(genre)
+
     print("processing...")
 
     return cont
