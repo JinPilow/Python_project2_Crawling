@@ -88,15 +88,14 @@ import numpy as np
 import pandas as pd
 from pandas import DataFrame
 
+def get_href():
+    site = soup.find_all('a', href=re.compile('https://store.steampowered.com/' + \
+                                                    'app/|bundle/|sub/'))
+    href = []
+    for i in site:
+        href.append(get_genre(i.get('href')))
+    return(href)
 
-
-html = requests.get('https://store.steampowered.com/search/?filter=topsellers')
-soup = BeautifulSoup(html.content, 'html.parser')
-
-title = soup.select('span.title')
-price = soup.select('div.col.search_price')
-genre_site = soup.find_all('a', href = re.compile('https://store.steampowered.com/'+\
-                                                'app/|bundle/|sub/'))
 # url에 접속해 장르를 가져오는 함수
 def get_genre(href):
     html = requests.get(href)
@@ -105,31 +104,29 @@ def get_genre(href):
     genre = []
     for category in tags[2:]:
         genre.append(category.get_text().strip())
+    print(genre)
     return genre
 
 # # 가격에서 콤마를 없애고 정수형으로 만드는 함수
 # def comma_to_int(string):
 #     number = re.sub(",", "", string)
 #     return int(number)
-#
+
 # list_title = [i.get_text() for i in title]
 list_genre = []
 # list_price = []
 
-# 리스트에 장르 저장
-for i in genre_site:
-    href = i.attrs['href']
-    list_genre.append(get_genre(href))
 
 if __name__ == '__main__':
-    start_time = time.time()
-    for i in genre_site:
-        href = i.attrs['href']
-        pool = Pool(processes = 5)
-        pool.map(get_genre())
-        list_genre.append(get_genre(href))
+    html = requests.get('https://store.steampowered.com/search/?filter=topsellers')
+    soup = BeautifulSoup(html.content, 'html.parser')
 
-    print(list_genre)
+    title = soup.select('span.title')
+    price = soup.select('div.col.search_price')
+
+    start_time = time.time()
+    pool = Pool(processes = 10)
+    pool.map(get_genre, get_href())
     print("실행 시간 : %s초" % (time.time() - start_time))
 
 
