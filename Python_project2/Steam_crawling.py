@@ -78,7 +78,8 @@ driver.quit()
 '''
 
 from bs4 import BeautifulSoup
-import multiprocessing
+from multiprocessing import Pool, Manager
+import time
 import requests
 import re
 import matplotlib.pyplot as plt
@@ -100,48 +101,60 @@ genre_site = soup.find_all('a', href = re.compile('https://store.steampowered.co
 def get_genre(href):
     html = requests.get(href)
     soup = BeautifulSoup(html.content, 'html.parser')
-    tags = soup.find_all('a', href= re.compile('https://store.steampowered.com/' + 'genre/'))
+    tags = soup.find_all('a', href= re.compile('https://store.steampowered.com/genre/'))
     genre = []
     for category in tags[2:]:
         genre.append(category.get_text().strip())
     return genre
 
-# 가격에서 콤마를 없애고 정수형으로 만드는 함수
-def comma_to_int(string):
-    number = re.sub(",", "", string)
-    return int(number)
-
-list_title = [i.get_text() for i in title]
+# # 가격에서 콤마를 없애고 정수형으로 만드는 함수
+# def comma_to_int(string):
+#     number = re.sub(",", "", string)
+#     return int(number)
+#
+# list_title = [i.get_text() for i in title]
 list_genre = []
-list_price = []
+# list_price = []
 
 # 리스트에 장르 저장
 for i in genre_site:
     href = i.attrs['href']
     list_genre.append(get_genre(href))
 
-# 리스트에 가격 저장
-for i in price:
-    if i.get_text().strip().count("₩") == 1:
-        a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
-        list_price.append(a)
-    else:
-        s = i.get_text().strip().split("₩")
-        a = comma_to_int(s[1].strip())
-        list_price.append(a)
+if __name__ == '__main__':
+    start_time = time.time()
+    for i in genre_site:
+        href = i.attrs['href']
+        pool = Pool(processes = 5)
+        pool.map(get_genre())
+        list_genre.append(get_genre(href))
 
-# title_price = dict(zip(list_title, list_price))
+    print(list_genre)
+    print("실행 시간 : %s초" % (time.time() - start_time))
 
-# 시각화
-sns.barplot(x=list_title,y=list_price)
-plt.xticks(rotation = 90, fontsize = 6)
-plt.show()
 
-# 데이터프레임화
-# df = DataFrame({'col_1': list_title, 'col_2': list_price})
-df = DataFrame(list_title, list_price, list_genre)
-print(df)
-
-factor_price = pd.cut(df.col_2, 4)
-group_price = df.col_2.groupby(factor_price)
-print(group_price.agg(['count', 'mean', 'std', 'min', 'max']))
+# # 리스트에 가격 저장
+# for i in price:
+#     if i.get_text().strip().count("₩") == 1:
+#         a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
+#         list_price.append(a)
+#     else:
+#         s = i.get_text().strip().split("₩")
+#         a = comma_to_int(s[1].strip())
+#         list_price.append(a)
+#
+# # title_price = dict(zip(list_title, list_price))
+#
+# # 시각화
+# sns.barplot(x=list_title,y=list_price)
+# plt.xticks(rotation = 90, fontsize = 6)
+# plt.show()
+#
+# # 데이터프레임화
+# # df = DataFrame({'TITLE': list_title, 'PRICE': list_price})
+# df = DataFrame(list_title, list_price, list_genre)
+# print(df)
+#
+# factor_price = pd.cut(df.col_2, 4)
+# group_price = df.col_2.groupby(factor_price)
+# print(group_price.agg(['count', 'mean', 'std', 'min', 'max']))
