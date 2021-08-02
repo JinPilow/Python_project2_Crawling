@@ -1,4 +1,3 @@
-'''
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -8,17 +7,38 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
 
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.headless = True
+chrome_options.add_argument("window-size=1366x768")
+chrome_options.add_argument("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36")
+
+
 # chrome_options = Options()
 # chrome_options.add_argument("--headless")
 
-# driver = webdriver.Chrome(options=chrome_options)
-# driver.implicitly_wait(6)
+browser = webdriver.Chrome(options=chrome_options)
+browser.implicitly_wait(6)
 
-driver = webdriver.Chrome()
 url = "https://store.steampowered.com/search/?filter=topsellers"
-driver.get(url)
+browser.get(url)
 
-'''
+soup = BeautifulSoup(browser.page_source, "lxml")
+
+games = soup.find("div", attrs={"id":"search_resultsRows"}).find_all("a")
+
+for idx, game in enumerate(games):
+    title = game.find("span", attrs={"class":"title"}).get_text()
+
+    discount_price = game.find("div", attrs={"class":"col search_price discounted responsive_secondrow"})
+    if discount_price:
+        price = game.find("div", attrs={"class": "col search_price discounted responsive_secondrow"}).span.get_text().strip()
+    else:
+        price = game.find("div", attrs={"class": "col search_price_discount_combined responsive_secondrow"}).get_text().strip()
+
+
+    print(f"{idx}. {title}\n가격:{price}")
+
 '''
 dic = dict()
 i = 1
@@ -77,70 +97,82 @@ while i <= 2:
 driver.quit()
 '''
 
-from bs4 import BeautifulSoup
-from multiprocessing import Pool, Manager
-import time
-import requests
-import re
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as np
-import pandas as pd
-from pandas import DataFrame
-
-def get_href():
-    site = soup.find_all('a', href=re.compile('https://store.steampowered.com/' + \
-                                                    'app/|bundle/|sub/'))
-    href = []
-    for i in site:
-        href.append(get_genre(i.get('href')))
-    return(href)
-
-# url에 접속해 장르를 가져오는 함수
-def get_genre(href):
-    html = requests.get(href)
-    soup = BeautifulSoup(html.content, 'html.parser')
-    tags = soup.find_all('a', href= re.compile('https://store.steampowered.com/genre/'))
-    genre = []
-    for category in tags[2:]:
-        genre.append(category.get_text().strip())
-    print(genre)
-    return genre
-
+# from bs4 import BeautifulSoup
+# from multiprocessing import Pool, Manager
+# import time
+# import requests
+# import re
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# import numpy as np
+# import pandas as pd
+# from pandas import DataFrame
+#
+# def get_url():
+#     site = soup.find_all('a', href=re.compile('https://store.steampowered.com/' + \
+#                                                     'app/|bundle/|sub/'))
+#     url = []
+#     for i in site:
+#         url.append(i.get('href'))
+#     return url
+#
+# # url에 접속해 장르를 가져오는 함수
+# def get_info(url):
+#     cont = {}
+#     html = requests.get(url)
+#     soup = BeautifulSoup(html.content, 'html.parser')
+#     genres = soup.find_all('a', href= re.compile('https://store.steampowered.com/genre/'))
+#     genre = []
+#     for category in genres[2:]:
+#         genre.append(category.get_text().strip())
+#
+#     title = soup.select_one('div.details_block > b')
+#     # print(title.find_next_siblings(text=True)[0])
+#     if title:
+#         print(title.find_next_siblings(text=True)[0])
+#     else:
+#         return
+#
+#     # price = soup.select_one('div.game_purchase_price.price')
+#     # print(price)
+#
+#
+#
 # # 가격에서 콤마를 없애고 정수형으로 만드는 함수
 # def comma_to_int(string):
 #     number = re.sub(",", "", string)
 #     return int(number)
-
-# list_title = [i.get_text() for i in title]
-list_genre = []
-# list_price = []
-
-
-if __name__ == '__main__':
-    html = requests.get('https://store.steampowered.com/search/?filter=topsellers')
-    soup = BeautifulSoup(html.content, 'html.parser')
-
-    title = soup.select('span.title')
-    price = soup.select('div.col.search_price')
-
-    start_time = time.time()
-    pool = Pool(processes = 10)
-    pool.map(get_genre, get_href())
-    print("실행 시간 : %s초" % (time.time() - start_time))
-
-
-# # 리스트에 가격 저장
-# for i in price:
-#     if i.get_text().strip().count("₩") == 1:
-#         a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
-#         list_price.append(a)
-#     else:
-#         s = i.get_text().strip().split("₩")
-#         a = comma_to_int(s[1].strip())
-#         list_price.append(a)
 #
-# # title_price = dict(zip(list_title, list_price))
+#
+#
+# if __name__ == '__main__':
+#     start_time = time.time()
+#     html = requests.get('https://store.steampowered.com/search/?filter=topsellers')
+#     soup = BeautifulSoup(html.content, 'html.parser')
+#
+#     price = soup.select('div.col.search_price')
+#
+#     start_time = time.time()
+#     pool = Pool(processes = 16)
+#     pool.map(get_info, get_url())
+#     print("실행 시간 : %s초" % (time.time() - start_time))
+#
+#     # list_title = [i.get_text() for i in title]
+#     list_genre = []
+#     list_price = []
+#
+#
+#     # 리스트에 가격 저장
+#     for i in price:
+#         if i.get_text().strip().count("₩") == 1:
+#             a = comma_to_int(i.get_text().strip().replace("₩", "").strip())
+#             list_price.append(a)
+#         else:
+#             s = i.get_text().strip().split("₩")
+#             a = comma_to_int(s[1].strip())
+#             list_price.append(a)
+
+    # title_price = dict(zip(list_title, list_price))
 #
 # # 시각화
 # sns.barplot(x=list_title,y=list_price)
