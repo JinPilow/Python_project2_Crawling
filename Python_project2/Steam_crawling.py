@@ -7,37 +7,57 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import time
 
+if __name__ == '__main__':
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.headless = True
+    chrome_options.add_argument("window-size=1366x768")
+    chrome_options.add_argument("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36")
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.headless = True
-chrome_options.add_argument("window-size=1366x768")
-chrome_options.add_argument("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.164 Safari/537.36")
+    # chrome_options = Options()
+    # chrome_options.add_argument("--headless")
+
+    browser = webdriver.Chrome(options=chrome_options)
+    browser.maximize_window()
+    browser.implicitly_wait(6)
+
+    url = "https://store.steampowered.com/search/?filter=topsellers"
+    browser.get(url)
+
+    interval = 1 # 1초 동안 기다렸다가 스크롤 내리기
+
+    # 현재 문서 높이를 가져와서 저장
+    # prev_height = browser.execute_script("return document.body.scrollHeight")
+    # i = 1
+    # while i < 5:
+    #     # 스크롤을 가장 아래로 내림
+    #     browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    #
+    #     # 페이지 로딩 대기
+    #     time.sleep(interval)
+    #
+    #     # 현재 문서 높이를 가져와서 저장
+    #     curr_height = browser.execute_script("return document.body.scrollHeight")
+    #     if curr_height == prev_height:
+    #         break
+    #
+    #     prev_height = curr_height
+    #     i += 1
+
+    soup = BeautifulSoup(browser.page_source, "lxml")
+    games = soup.find_all("div", attrs={"class":"responsive_search_name_combined"})
+    print(len(games))
+    for idx, game in enumerate(games):
+        title = game.find("span", attrs={"class":"title"}).get_text()
+        discount_price = game.find("div", attrs={"class":"col search_price discounted responsive_secondrow"})
+        if discount_price:
+            price = game.find("div", attrs={"class": "col search_price discounted responsive_secondrow"}).span.get_text().strip()
+
+        else:
+            price = game.find("div", attrs={"class": "col search_price_discount_combined responsive_secondrow"}).get_text().strip()
+
+        print(f"{idx+1}. {title}\n가격:{price}")
 
 
-# chrome_options = Options()
-# chrome_options.add_argument("--headless")
-
-browser = webdriver.Chrome(options=chrome_options)
-browser.implicitly_wait(6)
-
-url = "https://store.steampowered.com/search/?filter=topsellers"
-browser.get(url)
-
-soup = BeautifulSoup(browser.page_source, "lxml")
-
-games = soup.find("div", attrs={"id":"search_resultsRows"}).find_all("a")
-
-for idx, game in enumerate(games):
-    title = game.find("span", attrs={"class":"title"}).get_text()
-
-    discount_price = game.find("div", attrs={"class":"col search_price discounted responsive_secondrow"})
-    if discount_price:
-        price = game.find("div", attrs={"class": "col search_price discounted responsive_secondrow"}).span.get_text().strip()
-    else:
-        price = game.find("div", attrs={"class": "col search_price_discount_combined responsive_secondrow"}).get_text().strip()
-
-
-    print(f"{idx}. {title}\n가격:{price}")
 
 '''
 dic = dict()
